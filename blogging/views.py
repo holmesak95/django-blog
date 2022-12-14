@@ -10,7 +10,7 @@ class BloggingListView(ListView):
     template_name = 'blogging/list.html'
 
 class BloggingDetailView(DetailView):
-    model = Post
+    queryset = Post.objects.filter(published_date__isnull=False).order_by('-created_date')
     template_name = 'blogging/detail.html'
 
 
