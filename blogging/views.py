@@ -5,13 +5,19 @@ from blogging.models import Post
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
+
 class BloggingListView(ListView):
-    queryset = Post.objects.filter(published_date__isnull=False).order_by('-created_date')
-    template_name = 'blogging/list.html'
+    queryset = Post.objects.filter(published_date__isnull=False).order_by(
+        "-created_date"
+    )
+    template_name = "blogging/list.html"
+
 
 class BloggingDetailView(DetailView):
-    queryset = Post.objects.filter(published_date__isnull=False).order_by('-created_date')
-    template_name = 'blogging/detail.html'
+    queryset = Post.objects.filter(published_date__isnull=False).order_by(
+        "-created_date"
+    )
+    template_name = "blogging/detail.html"
 
 
 # def stub_view(request, *args, **kwargs):
