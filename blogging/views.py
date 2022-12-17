@@ -1,10 +1,28 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
-from blogging.models import Post
+from blogging.models import User, Post, Category
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from blogging.serializers import UserSerializer, PostSerializer, CategorySerializer
+from rest_framework import viewsets, response, permissions
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.filter(published_date__isnull=False).order_by(
+        "-created_date"
+    )
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class BloggingListView(ListView):
     queryset = Post.objects.filter(published_date__isnull=False).order_by(
